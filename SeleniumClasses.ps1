@@ -38,12 +38,12 @@ if ('OperatorTransformAttribute' -as [type]) {
                 return $InputData
             }
             switch -regex ($InputData) {
-                "^contain" { return 'contains' ; break }
-                "^match" { return 'match'    ; break }
-                "^n\w*match" { return 'notmatch' ; break }
-                "^eq" { return 'eq'       ; break }
-                "^n\w*eq" { return 'ne'       ; break }
-                "^n\w*like" { return 'like'       ; break }
+                '^contain' { return 'contains' ; break }
+                '^match' { return 'match'    ; break }
+                '^n\w*match' { return 'notmatch' ; break }
+                '^eq' { return 'eq'       ; break }
+                '^n\w*eq' { return 'ne'       ; break }
+                '^n\w*like' { return 'like'       ; break }
             }
             return $InputData
         }
@@ -52,62 +52,63 @@ if ('OperatorTransformAttribute' -as [type]) {
     class OperatorTransform : OperatorTransformAttribute {}
 }
 
-$dll1Path = Join-path -path (Join-path -path $PSScriptRoot -ChildPath 'assemblies') -ChildPath 'WebDriver.dll'
-$dll2Path = Join-path -path (Join-path -path $PSScriptRoot -ChildPath 'assemblies') -ChildPath 'WebDriver.Support.dll'
+$dll1Path = Join-Path -Path (Join-Path -Path $PSScriptRoot -ChildPath 'assemblies') -ChildPath 'WebDriver.dll'
+$dll2Path = Join-Path -Path (Join-Path -Path $PSScriptRoot -ChildPath 'assemblies') -ChildPath 'WebDriver.Support.dll'
+$dll3Path = Join-Path -Path (Join-Path -Path $PSScriptRoot -ChildPath 'assemblies') -ChildPath 'SeleniumExtras.WaitHelpers.dll'
 
-Add-type @"
-using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
-using System.Collections.Generic;
-namespace SeleniumSelection {
-    public class Option {
-        public static bool IsMultiSelect(IWebElement element) {
-            var selection = new SelectElement(element);
-            return selection.IsMultiple;
-        }
-        public static IList<IWebElement> GetOptions(IWebElement element) {
-            var selection = new SelectElement(element);
-            return selection.Options;
-        }
-        public static void SelectByValue(IWebElement element, string value) {
-            var selection = new SelectElement(element);
-            selection.SelectByValue(value);
-        }
-        public static void DeselectByValue(IWebElement element, string value) {
-            var selection = new SelectElement(element);
-            selection.DeselectByValue(value);
-        }
-        public static void SelectByText(IWebElement element, string text, bool partialMatch = false) {
-            var selection = new SelectElement(element);
-            selection.SelectByText(text,partialMatch);
-        }
-        public static void DeselectByText(IWebElement element, string text) {
-            var selection = new SelectElement(element);
-            selection.DeselectByText(text);
-        }
-        public static void SelectByIndex(IWebElement element, int index) {
-            var selection = new SelectElement(element);
-            selection.SelectByIndex(index);
-        }
-        public static void DeselectByIndex(IWebElement element, int index) {
-            var selection = new SelectElement(element);
-            selection.DeselectByIndex(index);
-        }
-        public static void DeselectAll(IWebElement element) {
-            var selection = new SelectElement(element);
-            selection.DeselectAll();
-        }
-        public static IWebElement GetSelectedOption(IWebElement element) {
-            var selection = new SelectElement(element);
-            return selection.SelectedOption;
-        }
-        public static IList<IWebElement> GetAllSelectedOptions(IWebElement element) {
-            var selection = new SelectElement(element);
-            return selection.AllSelectedOptions;
-        }
-    }
-}
-"@ -ReferencedAssemblies $dll1Path, $dll2Path, mscorlib
+# Add-Type @'
+# using OpenQA.Selenium;
+# using OpenQA.Selenium.Support.UI;
+# using System.Collections.Generic;
+# namespace SeleniumSelection {
+#     public class Option {
+#         public static bool IsMultiSelect(IWebElement element) {
+#             var selection = new SelectElement(element);
+#             return selection.IsMultiple;
+#         }
+#         public static IList<IWebElement> GetOptions(IWebElement element) {
+#             var selection = new SelectElement(element);
+#             return selection.Options;
+#         }
+#         public static void SelectByValue(IWebElement element, string value) {
+#             var selection = new SelectElement(element);
+#             selection.SelectByValue(value);
+#         }
+#         public static void DeselectByValue(IWebElement element, string value) {
+#             var selection = new SelectElement(element);
+#             selection.DeselectByValue(value);
+#         }
+#         public static void SelectByText(IWebElement element, string text, bool partialMatch = false) {
+#             var selection = new SelectElement(element);
+#             selection.SelectByText(text,partialMatch);
+#         }
+#         public static void DeselectByText(IWebElement element, string text) {
+#             var selection = new SelectElement(element);
+#             selection.DeselectByText(text);
+#         }
+#         public static void SelectByIndex(IWebElement element, int index) {
+#             var selection = new SelectElement(element);
+#             selection.SelectByIndex(index);
+#         }
+#         public static void DeselectByIndex(IWebElement element, int index) {
+#             var selection = new SelectElement(element);
+#             selection.DeselectByIndex(index);
+#         }
+#         public static void DeselectAll(IWebElement element) {
+#             var selection = new SelectElement(element);
+#             selection.DeselectAll();
+#         }
+#         public static IWebElement GetSelectedOption(IWebElement element) {
+#             var selection = new SelectElement(element);
+#             return selection.SelectedOption;
+#         }
+#         public static IList<IWebElement> GetAllSelectedOptions(IWebElement element) {
+#             var selection = new SelectElement(element);
+#             return selection.AllSelectedOptions;
+#         }
+#     }
+# }
+# '@ -ReferencedAssemblies $dll1Path, $dll2Path, mscorlib, $dll3Path
 
 
 enum SeBrowsers {

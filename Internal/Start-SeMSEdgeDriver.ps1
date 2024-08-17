@@ -37,9 +37,9 @@ function Start-SeMSEdgeDriver {
         $Driver = [OpenQA.Selenium.Edge.EdgeDriver]::new($service , $options)
     }
     catch {
-        $driverversion = (Get-Item .\assemblies\MicrosoftWebDriver.exe).VersionInfo.ProductVersion
+        $driverversion = (Get-Item .\assemblies\msedgedriver.exe).VersionInfo.ProductVersion
         $WindowsVersion = [System.Environment]::OSVersion.Version.ToString()
-        Write-Warning -Message "Edge driver is $driverversion. Windows is $WindowsVersion. If the driver is out-of-date, update it as a Windows feature,`r`nand then delete $PSScriptRoot\assemblies\MicrosoftWebDriver.exe"
+        Write-Warning -Message "Edge driver is $driverversion. Windows is $WindowsVersion. If the driver is out-of-date, update it as a Windows feature,`r`nand then delete $PSScriptRoot\assemblies\msedgedriver.exe"
         throw $_ ; return
     }
     if (-not $Driver) { Write-Warning "Web driver was not created"; return }

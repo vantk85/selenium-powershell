@@ -4,3 +4,4 @@ Scratchpad.ps1
 Output/testResults*.xml
 Output/stats.json
 debug.log
+_extra

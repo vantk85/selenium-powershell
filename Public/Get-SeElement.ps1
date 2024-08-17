@@ -76,7 +76,7 @@ function Get-SeElement {
             'Default' { 
                 if ($Timeout) {
                     $WebDriverWait = [OpenQA.Selenium.Support.UI.WebDriverWait]::new($Driver, ([timespan]::FromMilliseconds($Timeout * 1000)))
-                    $Condition = [OpenQA.Selenium.Support.UI.ExpectedConditions]::PresenceOfAllElementsLocatedBy($ByCondition)
+                    $Condition = [SeleniumExtras.WaitHelpers.ExpectedConditions]::PresenceOfAllElementsLocatedBy($ByCondition)
                     $Output = $WebDriverWait.Until($Condition) | DisplayedFilter -All:$ShowAll
                 }
                 else {
@@ -84,33 +84,33 @@ function Get-SeElement {
                 }
             }
             'ByElement' {
-                Write-Verbose "Searching an Element - Timeout ignored" 
+                Write-Verbose 'Searching an Element - Timeout ignored' 
                 $Output = $Element.FindElements($ByCondition) | DisplayedFilter -All:$ShowAll
             }
         }
         
  
         $GetAllAttributes = $PSBoundParameters.ContainsKey('Attributes') -and $Attributes.Count -eq 1 -and $Attributes[0] -eq '*'
-        $MyAttributes =  [System.Collections.Generic.List[String]]::new()
+        $MyAttributes = [System.Collections.Generic.List[String]]::new()
         if ( $null -ne $Attributes) { $MyAttributes = [System.Collections.Generic.List[String]]$Attributes }
         
         if (!$GetAllAttributes -and $Filter) {
-                $AdditionalAttributes = [regex]::Matches($Filter, '\$_\.Attributes.(\w+)', [System.Text.RegularExpressions.RegexOptions]::IgnoreCase) | % { $_.Groups[1].value }
-                $AdditionalAttributes | ForEach-Object {if (!$MyAttributes.Contains($_)) { $MyAttributes.Add($_) }}
+            $AdditionalAttributes = [regex]::Matches($Filter, '\$_\.Attributes.(\w+)', [System.Text.RegularExpressions.RegexOptions]::IgnoreCase) | ForEach-Object { $_.Groups[1].value }
+            $AdditionalAttributes | ForEach-Object { if (!$MyAttributes.Contains($_)) { $MyAttributes.Add($_) } }
         }
 
         if ($MyAttributes.Count -gt 0) {
-           Foreach ($Item in $Output) {
+            Foreach ($Item in $Output) {
                 $htAttributes = Get-SeElementAttribute -Element $Item -Name $MyAttributes
-                if ($htAttributes -is [String]) {$htAttributes = @{$MyAttributes[0] = $htAttributes }}
+                if ($htAttributes -is [String]) { $htAttributes = @{$MyAttributes[0] = $htAttributes } }
                 Add-Member -InputObject $Item -Name 'Attributes' -Value $htAttributes -MemberType NoteProperty
-           }
+            }
         }
 
         # Apply filter here
-        $AndFilterstr = ""
+        $AndFilterstr = ''
         if ($Filter) { 
-            $AndFilterstr = " and the applied filter"
+            $AndFilterstr = ' and the applied filter'
             $Output = $Output | Where-Object $Filter 
         }
         

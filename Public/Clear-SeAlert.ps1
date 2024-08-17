@@ -16,7 +16,7 @@ function Clear-SeAlert {
             try { 
                 $ImpTimeout = Disable-SeDriverImplicitTimeout -Driver $Driver
                 $WebDriverWait = [OpenQA.Selenium.Support.UI.WebDriverWait]::new($Driver, (New-TimeSpan -Seconds 10))
-                $Condition = [OpenQA.Selenium.Support.UI.ExpectedConditions]::AlertIsPresent()
+                $Condition = [DotNetSeleniumExtras.WaitHelpers.ExpectedConditions]::AlertIsPresent()
                 $WebDriverWait.Until($Condition)
                 $Alert = $Driver.SwitchTo().alert() 
             }

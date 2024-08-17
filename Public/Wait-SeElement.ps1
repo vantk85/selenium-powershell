@@ -20,7 +20,7 @@ function Wait-SeElement {
 
     )
     begin {
-        $Driver = Init-SeDriver  -ErrorAction Stop
+        $Driver = Init-SeDriver -ErrorAction Stop
         Test-SeElementConditionsValueValidation -By $By -Element $Element -Condition $Condition -ConditionValue $ConditionValue -ParameterSetName $PSCmdlet.ParameterSetName @Stop 
         $ImpTimeout = -1 
 
@@ -35,18 +35,18 @@ function Wait-SeElement {
         
         if ($PSBoundParameters.ContainsKey('Element')) {
             if ($NoExtraArg) {
-                $SeCondition = [OpenQA.Selenium.Support.UI.ExpectedConditions]::$Condition($Element)
+                $SeCondition = [SeleniumExtras.WaitHelpers.ExpectedConditions]::$Condition($Element)
             }
             else {
-                $SeCondition = [OpenQA.Selenium.Support.UI.ExpectedConditions]::$Condition($Element, $ConditionValue)
+                $SeCondition = [SeleniumExtras.WaitHelpers.ExpectedConditions]::$Condition($Element, $ConditionValue)
             }
         }
         else {
             if ($NoExtraArg) {
-                $SeCondition = [OpenQA.Selenium.Support.UI.ExpectedConditions]::$Condition([OpenQA.Selenium.By]::$By($Value))
+                $SeCondition = [SeleniumExtras.WaitHelpers.ExpectedConditions]::$Condition([OpenQA.Selenium.By]::$By($Value))
             }
             else {
-                $SeCondition = [OpenQA.Selenium.Support.UI.ExpectedConditions]::$Condition([OpenQA.Selenium.By]::$By($Value), $ConditionValue)
+                $SeCondition = [SeleniumExtras.WaitHelpers.ExpectedConditions]::$Condition([OpenQA.Selenium.By]::$By($Value), $ConditionValue)
             }
         }
 

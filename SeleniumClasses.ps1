@@ -54,7 +54,6 @@ if ('OperatorTransformAttribute' -as [type]) {
 
 $dll1Path = Join-Path -Path (Join-Path -Path $PSScriptRoot -ChildPath 'assemblies') -ChildPath 'WebDriver.dll'
 $dll2Path = Join-Path -Path (Join-Path -Path $PSScriptRoot -ChildPath 'assemblies') -ChildPath 'WebDriver.Support.dll'
-$dll3Path = Join-Path -Path (Join-Path -Path $PSScriptRoot -ChildPath 'assemblies') -ChildPath 'SeleniumExtras.WaitHelpers.dll'
 
 Add-Type -Language CSharp @'
 using OpenQA.Selenium;

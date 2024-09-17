@@ -13,7 +13,6 @@ function Save-SeScreenshot {
         [OpenQA.Selenium.Screenshot]$Screenshot,
         [Parameter(Mandatory = $true)]
         [string]$Path,
-        [OpenQA.Selenium.ScreenshotImageFormat]$ImageFormat = [OpenQA.Selenium.ScreenshotImageFormat]::Png,
         [Parameter(Mandatory = $true, ParameterSetName = 'Element')]
         [ValidateNotNull()]
         [OpenQA.Selenium.IWebElement]$Element
@@ -21,7 +20,7 @@ function Save-SeScreenshot {
 
     begin {
         if ($PSCmdlet.ParameterSetName -eq 'Driver') {
-            $Driver = Init-SeDriver  -ErrorAction Stop
+            $Driver = Init-SeDriver -ErrorAction Stop
         }
     }
     process {
@@ -38,6 +37,6 @@ function Save-SeScreenshot {
             'Element' { $Screenshot = New-SeScreenshot -Element $Element }
         }
         
-        $Screenshot.SaveAsFile($Path, $ImageFormat)
+        $Screenshot.SaveAsFile($Path)
     }
 }
